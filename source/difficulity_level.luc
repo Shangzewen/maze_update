@@ -1,0 +1,67 @@
+module difficulity_level (
+    input clk,  // clock
+    input rst,  // reset
+    input map_address[4],
+    input diff_level,
+  //  input map[8],
+    input x_location[3],
+    input y_location[3],
+  //  output mask_out[8],
+    output map_out[8]
+  ) {
+  .clk(clk){
+    .rst(rst){
+        maze_map_rom rom;
+      
+    }
+    
+  }
+  
+  sig mask_out[8];
+  sig map[8];
+  
+    const MASK_00 = 8b11000000;
+    const MASK_01 = 8b01100000;
+    const MASK_02 = 8b00110000;
+    const MASK_03 = 8b00011000;
+    const MASK_04 = 8b00001100;
+    const MASK_05 = 8b00000110;
+    const MASK_06 = 8b00000011;
+    const MASK_07 = 8b00000001;    
+
+    
+  always {
+  rom.address = map_address;
+  map = rom.map;
+  mask_out = 0;
+    
+
+    if(diff_level==b0){
+    if(x_location==0){
+      mask_out = MASK_00;
+        }else if(x_location ==1){
+          mask_out = MASK_01;
+        }else if(x_location == 2){
+          mask_out = MASK_02;
+        }else if(x_location == 3){
+          mask_out = MASK_03;
+        }else if(x_location == 4){
+          mask_out = MASK_04;
+        }else if(x_location == 5){
+          mask_out = MASK_05;
+        }else if(x_location == 6){
+          mask_out = MASK_06;
+        }else if(x_location == 7){
+          mask_out = MASK_07;
+        }
+    
+      }else{
+    
+        mask_out =map;
+        map_out = map;
+      }
+      
+      
+    map_out = map&mask_out;
+  }
+}
