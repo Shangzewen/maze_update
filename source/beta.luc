@@ -12,6 +12,7 @@ module beta (
     output xloc_out[3],
     
     input difflevel_dip,
+    input difflevell_dip,
    //output diff_level[1],
     //output debug_fsm[4],
     //output debug_fsmstate[8],
@@ -61,6 +62,7 @@ module beta (
     diff.y_location = reg.ylocation;
     final_row = diff.map_out;
     diff.diff_level = difflevel_dip;
+    diff.diff_levell = difflevell_dip;
     
     //diff_level = game_controlunit.diff_level;      // take the diff level from the fsm 
     // set up regfile unit 

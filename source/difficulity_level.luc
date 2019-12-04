@@ -3,6 +3,7 @@ module difficulity_level (
     input rst,  // reset
     input map_address[4],
     input diff_level,
+    input diff_levell,
   //  input map[8],
     input x_location[3],
     input y_location[3],
@@ -36,7 +37,7 @@ module difficulity_level (
   mask_out = 0;
     
 
-    if(diff_level==b0){
+    if(diff_level==b1&&diff_levell==0){
     if(x_location==0){
       mask_out = MASK_00;
         }else if(x_location ==1){
@@ -55,8 +56,11 @@ module difficulity_level (
           mask_out = MASK_07;
         }
     
-      }else{
+      }else if(diff_level == b1){
     
+        mask_out =map;
+        map_out = map;
+      }else{
         mask_out =map;
         map_out = map;
       }

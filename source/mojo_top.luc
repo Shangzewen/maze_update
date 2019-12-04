@@ -4,6 +4,14 @@ module mojo_top (
     //output led [8],         // 8 user controllable LEDs
     input cclk,             // configuration clock, AVR ready when high
     output spi_miso,        // AVR SPI MISO
+    //input buttonone,
+    input buttonupp,
+    input buttondownn,
+    input buttonleftt,
+    input buttonrightt,
+    input buttonhintt,
+    input buttonresett,    // the custom buttons input 
+    input mydip,
     input spi_ss,           // AVR SPI Slave Select
     input spi_mosi,         // AVR SPI MOSI
     input spi_sck,          // AVR SPI Clock
@@ -45,7 +53,8 @@ module mojo_top (
       difficulity_level diff;
       dff counter[20];
     }
-
+      //edge_detector edge_dt_btn_one(#RISE(1),#FALL(0));
+      //buttoncon btn_con_one;      
       edge_detector edge_dt_btn_up(#RISE(1),#FALL(0));
       buttoncon btn_con_up;
       edge_detector edge_dt_btn_down(#RISE(1),#FALL(0));
@@ -59,19 +68,26 @@ module mojo_top (
   }
   always {
     io_led = io_dip;   // connect the DIP switches to the LEDs 
-    btn_con_up.in = io_button[0];
+    
+    //btn_con_one.in = buttonone;
+    //edge_dt_btn_one.in = btn_con_one.out;
+    
+    
+    diff.diff_levell=0;
+    btn_con_up.in = buttonupp;
     edge_dt_btn_up.in = btn_con_up.out;
     game_machine.up_button = edge_dt_btn_up.out;
-    btn_con_down.in = io_button[2];
+    //btn_con_down.in = io_button[2];
+    btn_con_down.in = buttondownn;
     edge_dt_btn_down.in = btn_con_down.out;
     game_machine.down_button = edge_dt_btn_down.out;
-    btn_con_left.in = io_button[3];
+    btn_con_left.in = buttonleftt;
     edge_dt_btn_left.in = btn_con_left.out;
     game_machine.left_button = edge_dt_btn_left.out;
-    btn_con_right.in = io_button[4];
+    btn_con_right.in = buttonrightt;
     edge_dt_btn_right.in = btn_con_right.out;
     game_machine.right_button = edge_dt_btn_right.out;
-    btn_con_hint.in = io_button[1];
+    btn_con_hint.in = buttonhintt;
     edge_dt_btn_hint.in = btn_con_hint.out;
     game_machine.hint_button = edge_dt_btn_hint.out;            
     reset_cond.in = ~rst_n;   // input raw inverted reset signal
@@ -79,7 +95,9 @@ module mojo_top (
     
     
     
-    game_machine.difflevel_dip = io_dip[2][0];
+    //game_machine.difflevel_dip = mydip;
+    game_machine.difflevel_dip = buttonhintt;
+    game_machine.difflevell_dip = mydip;
     io_led[0][0] = io_dip[0][0];
     
     // doing the difficulity_level
@@ -95,11 +113,11 @@ module mojo_top (
     dec_ctr.dnc = game_machine.decctr_decrease;
     seg.values = dec_ctr.digits;
     if(io_button[1]){
-      io_led[2] = game_machine.final_row;
+      //io_led[2] = game_machine.final_row;
       }else{
-      io_led[2][2:0] = game_machine.yloc_out;
+      //io_led[2][2:0] = game_machine.yloc_out;
       //io_led[2][7:3]=game_machine.debug_fsm;   // set the debug led
-      io_led[2][7:3]=0; 
+      //io_led[2][7:3]=0; 
       //led = game_machine.debug_fsmstate;
       }
 
@@ -494,7 +512,7 @@ module mojo_top (
           state.d = state.A;
         }
   } 
-           
-  io_led = io_dip;         
+   //io_led[2][0] = buttonone;        // for debug
+  //io_led = io_dip;         
   }    
 }
