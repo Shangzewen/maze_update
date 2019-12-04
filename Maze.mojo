@@ -20,6 +20,7 @@
     <src>regfile.luc</src>
     <ucf lib="true">io_shield.ucf</ucf>
     <ucf>LEDpins.ucf</ucf>
+    <ucf>custom.ucf</ucf>
     <ucf lib="true">mojo.ucf</ucf>
     <component>decoder.luc</component>
     <component>uart_rx.luc</component>
